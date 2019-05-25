@@ -21,9 +21,12 @@ public:
     char Current_Ver[20];
     char Android_Ver[20];
 
-    Registros get_registro(int pos){
-        fstream files;
+    void get_registro(int pos,Registros *regis){
+        fstream files;        
         files.open("BD2.dat",ios::in | ios::binary);
+        files.seekg(226*pos,ios::beg);
+        files.read((char *)regis, 226);
+        files.close();
     }
 };
 
