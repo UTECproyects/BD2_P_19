@@ -12,7 +12,7 @@ using namespace std;
 
 class Block{
 private:
-  string file;
+  string name;
   vector<long> values;
 public:
   Block(string name):name(name){}
