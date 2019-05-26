@@ -10,7 +10,7 @@ int main(){
     insertToTable(reg.App,i);
   }
   Registros* search = new Registros;
-  search = searchInTable("Twit");
+  search = searchInTable("Twitter");
   if(search){search->print();}
   else{cout <<"No se encontro\n";}
 }

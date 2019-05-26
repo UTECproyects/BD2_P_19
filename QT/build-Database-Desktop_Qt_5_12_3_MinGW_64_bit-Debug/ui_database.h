@@ -71,6 +71,7 @@ public:
         pushButton = new QPushButton(splitter);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setMaximumSize(QSize(60, 190));
+        pushButton->setAutoFillBackground(false);
         splitter->addWidget(pushButton);
         splitter_2->addWidget(splitter);
         tableView = new QTableView(splitter_2);

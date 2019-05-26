@@ -1,6 +1,9 @@
 #include "database.h"
 #include <QApplication>
-#include "../../DB/registros.h"
+#ifndef QTapp_h
+    #define QTapp_h  "../../"
+#endif
+#include "../../Dependencies/registros.h"
 
 int main(int argc, char *argv[])
 {

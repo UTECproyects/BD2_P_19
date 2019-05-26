@@ -6,7 +6,11 @@
 #include <bitset>
 #include <fstream>
 #include <cmath>
-#include "../Dependencies/registros.h"
+#ifdef QTapp_h
+  #include "../../Dependencies/registros.h"  
+#else
+  #include "../Dependencies/registros.h"    
+#endif
 #define WIDTH 40
 using namespace std;
 

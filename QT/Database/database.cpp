@@ -4,7 +4,10 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QFile>
-#include "../../DB/registros.h"
+#ifndef QTapp_h
+    #define QTapp_h  "../../"
+#endif
+#include "../../Dependencies/registros.h"
 
 Database::Database(QWidget *parent) :
     QMainWindow(parent),
@@ -25,17 +28,17 @@ Database::~Database()
 void Database::on_pushButton_clicked()
 {
     Registros reg;
-    reg.get_registro(0,&reg);
+    reg.get_registro(0);
     reg.print();
-    string text = ui->textEdit->toPlainText().toUtf8().constData();
+    std::string text = ui->textEdit->toPlainText().toUtf8().constData();
 
 
     mModel->setRowCount(1);
     mModel->setColumnCount(13);
     mModel->setItem(0,0,new QStandardItem(reg.App));
     mModel->setItem(0,1,new QStandardItem(reg.Category));
-    mModel->setItem(0,2,new QStandardItem(to_string(reg.Rating).c_str()));
-    mModel->setItem(0,3,new QStandardItem(to_string(reg.Review).c_str()));
+    mModel->setItem(0,2,new QStandardItem(std::to_string(reg.Rating).c_str()));
+    mModel->setItem(0,3,new QStandardItem(std::to_string(reg.Review).c_str()));
     mModel->setItem(0,4,new QStandardItem(reg.Size));
     mModel->setItem(0,5,new QStandardItem(reg.Installs));
     mModel->setItem(0,6,new QStandardItem(reg.Type));
