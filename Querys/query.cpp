@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include "RandomFile.h"
+#include "../Random_File/RandomFile.h"
 using namespace std;
 class query
 {
@@ -119,6 +119,86 @@ public:
         }
         return false;
     }
+    void Imprimir_registros(vector<Registros *> registros_recibidos, string columna)
+    {
+        for (int i = 0; i < registros_recibidos.size(); i++)
+        {
+            if (registros_recibidos[i] == nullptr)
+            {
+                return;
+            }
+            if (columna == "*")
+            {
+                //cout << "Indice: " << it->first << "   Direccion: " << it->second << endl;
+                cout << registros_recibidos[i]->App << " || ";
+                cout << registros_recibidos[i]->Category << " || ";
+                cout << registros_recibidos[i]->Rating << " || ";
+                cout << registros_recibidos[i]->Review << " || ";
+                cout << registros_recibidos[i]->Size << " || ";
+                cout << registros_recibidos[i]->Installs << " || ";
+                cout << registros_recibidos[i]->Type << " || ";
+                cout << registros_recibidos[i]->Price << " || ";
+                cout << registros_recibidos[i]->Content_Rating << " || ";
+                cout << registros_recibidos[i]->Genres << " || ";
+                cout << registros_recibidos[i]->Last_Updates << " || ";
+                cout << registros_recibidos[i]->Current_Ver << " || ";
+                cout << registros_recibidos[i]->Android_Ver << endl;
+            }
+            else if (columna == "App")
+            {
+                cout << registros_recibidos[i]->App << endl;
+            }
+            else if (columna == "Category")
+            {
+                cout << registros_recibidos[i]->Category << endl;
+            }
+            else if (columna == "Rating")
+            {
+                cout << registros_recibidos[i]->Rating << endl;
+            }
+            else if (columna == "Review")
+            {
+                cout << registros_recibidos[i]->Review << endl;
+            }
+            else if (columna == "Size")
+            {
+                cout << registros_recibidos[i]->Size << endl;
+            }
+            else if (columna == "Installs")
+            {
+                cout << registros_recibidos[i]->Installs << endl;
+            }
+            else if (columna == "Type")
+            {
+                cout << registros_recibidos[i]->Type << endl;
+            }
+            else if (columna == "Price")
+            {
+                cout << registros_recibidos[i]->Price << endl;
+            }
+            else if (columna == "Content_Rating")
+            {
+                cout << registros_recibidos[i]->Content_Rating << endl;
+            }
+            else if (columna == "Genres")
+            {
+                cout << registros_recibidos[i]->Genres << endl;
+            }
+            else if (columna == "Last_Updates")
+            {
+                cout << registros_recibidos[i]->Last_Updates << endl;
+            }
+            else if (columna == "Current_Ver")
+            {
+                cout << registros_recibidos[i]->Current_Ver << endl;
+            }
+            else if (columna == "Android_Ver")
+            {
+                cout << registros_recibidos[i]->Android_Ver << endl;
+            }
+            delete registros_recibidos[i];
+        }
+    }
     bool ejecutar_consulta_recibida(vector<string> query)
     {
         if (!verificar_consulta_recibida(query))
@@ -126,18 +206,27 @@ public:
             cout << "Error en la consulta, consulta erronea" << endl;
             return false;
         }
-        RandomFile randomfile("Indice/index.dat");
+        RandomFile randomfile("../Random_File/Indice/index.dat");
         randomfile.leerIndice();
         //randomfile.imprimirIndices();
+        vector<Registros *> registros_recibidos;
+        char App[App_name_size];
         if (query.size() == 4)
         {
-            randomfile.busqueda("0", query[1]);
+            //randomfile.busqueda("0", query[1]);
+            for (std::map<string, int>::iterator it = randomfile.index.indice.begin(); it != randomfile.index.indice.end(); ++it)
+            {
+                registros_recibidos.push_back(randomfile.busqueda(it->first));
+            }
+            Imprimir_registros(registros_recibidos, query[1]);
         }
         else if (query.size() == 8)
         {
-            char App[App_name_size];
+
             strcpy(App, (query[7].substr(0, App_name_size - 1)).c_str());
-            randomfile.busqueda(App, query[1]);
+            //randomfile.busqueda(App, query[1]);
+            registros_recibidos.push_back(randomfile.busqueda(App));
+            Imprimir_registros(registros_recibidos, query[1]);
         }
         return true;
     }
