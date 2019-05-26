@@ -7,7 +7,7 @@ namespace Ui {
 class Database;
 }
 
-class QstandardItemModel;
+class QStandardItemModel;
 
 class Database : public QMainWindow
 {
@@ -21,8 +21,9 @@ private slots:
     void on_pushButton_clicked();
 
 private:
+    //void setValueAt(int x,int y)
     Ui::Database *ui;
-    QstandardItemModel *mModel;
+    QStandardItemModel *mModel;
 };
 
 #endif // DATABASE_H
