@@ -6,7 +6,6 @@ int main(){
   int sizeDocument = reg.getDocumentSize();
   for(int i = 0; i < sizeDocument; i++){
     reg.get_registro(i);
-    string app(reg.App);
     insertToTable(reg.App,i);
   }
   Registros* search = new Registros;
