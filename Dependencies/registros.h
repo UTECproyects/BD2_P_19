@@ -23,7 +23,7 @@ public:
 
     void get_registro(int pos){
         fstream files;
-        files.open("DB/BD2.dat",ios::in | ios::binary);
+        files.open("Dependencies/BD2.dat",ios::in | ios::binary);
         files.seekg(239*pos,ios::beg);
         files.read((char *)this, 239);
         files.close();
@@ -31,7 +31,7 @@ public:
 
     int getDocumentSize(){
       fstream file;
-      file.open("DB/BD2.dat",ios::in | ios::binary);
+      file.open("Dependencies/BD2.dat",ios::in | ios::binary);
       file.seekg(0, ios::end);
       int sizeDocument = file.tellg();
       return sizeDocument/239;

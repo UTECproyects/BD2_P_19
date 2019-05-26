@@ -1,4 +1,4 @@
-#include "DynamicHashing/registros.h"
+#include "Dependencies/registros.h"
 #include "DynamicHashing/dynamicHashing.h"
 
 int main(){

@@ -6,7 +6,7 @@
 #include <bitset>
 #include <fstream>
 #include <cmath>
-#include "registros.h"
+#include "../Dependencies/registros.h"
 #define WIDTH 40
 using namespace std;
 
