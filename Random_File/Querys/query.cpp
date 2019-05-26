@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 #include "../RandomFile.h"
+#include <sstream>
 using namespace std;
 class query
 {
@@ -18,6 +19,9 @@ public:
         consultas_aceptadas.push_back("from");
         consultas_aceptadas.push_back("DB");
         consultas_aceptadas.push_back("where");
+        consultas_aceptadas.push_back("insert");
+        consultas_aceptadas.push_back("into");
+        consultas_aceptadas.push_back("values");
         columnas.push_back("*");
         columnas.push_back("App");
         columnas.push_back("Category");
@@ -40,7 +44,12 @@ public:
 
         for (size_t i = 0; i < query.size(); i++)
         {
-            if (i == 1 || i == 5)
+            //cout << query[i] << endl;
+            if (query[0] == "insert" && i == 4)
+            {
+                contador_de_validacion++;
+            }
+            if ((i == 1 || i == 5) && query[0] != "insert")
             {
                 if (find(columnas.begin(), columnas.end(), query[i]) != columnas.end())
                 {
@@ -62,6 +71,7 @@ public:
             {
                 contador_de_validacion++;
             }
+            //cout << contador_de_validacion << " " << query.size() << endl;
         }
         if (contador_de_validacion == query.size())
         {
@@ -108,7 +118,7 @@ public:
             }
         }
     }
-    bool analizar_sexto_parametro(string param)
+    /*bool analizar_sexto_parametro(string param)
     {
         bool operador_logico = analizar_operador_logico(param);
         string a = param.substr(0, param.find(operador_logico));
@@ -118,7 +128,7 @@ public:
             return true;
         }
         return false;
-    }
+    }*/
     void Imprimir_registros(vector<Registros *> registros_recibidos, string columna)
     {
         for (int i = 0; i < registros_recibidos.size(); i++)
@@ -199,41 +209,34 @@ public:
             delete registros_recibidos[i];
         }
     }
-    bool ejecutar_consulta_recibida(vector<string> query)
+    vector<string> parse_query(string query_string)
     {
-        if (!verificar_consulta_recibida(query))
+        vector<string> query;
+        size_t pos = 0;
+        string sub_string = "";
+        for (size_t i = 0; i < query_string.size(); i++)
         {
-            cout << "Error en la consulta, consulta erronea" << endl;
-            return false;
-        }
-        RandomFile randomfile("../Indice/index.dat");
-        randomfile.leerIndice();
-        //randomfile.imprimirIndices();
-        vector<Registros *> registros_recibidos;
-        char App[App_name_size];
-        if (query.size() == 4)
-        {
-            //randomfile.busqueda("0", query[1]);
-            for (std::map<string, int>::iterator it = randomfile.index.indice.begin(); it != randomfile.index.indice.end(); ++it)
+            if (query_string[i] == ';')
             {
-                registros_recibidos.push_back(randomfile.busqueda(it->first));
+                break;
             }
-            Imprimir_registros(registros_recibidos, query[1]);
+            if (query_string[i] == ' ' && query_string[i] != ',')
+            {
+                query.push_back(sub_string);
+                sub_string = "";
+            }
+            else
+            {
+                if (query_string[i] != (char)39 && query_string[i] != '(' && query_string[i] != ')')
+                {
+                    sub_string += query_string[i];
+                }
+            }
         }
-        else if (query.size() == 8)
-        {
+        return query;
 
-            strcpy(App, (query[7].substr(0, App_name_size - 1)).c_str());
-            //randomfile.busqueda(App, query[1]);
-            registros_recibidos.push_back(randomfile.busqueda(App));
-            Imprimir_registros(registros_recibidos, query[1]);
-        }
-        return true;
-    }
-};
-int main()
-{
-    query obj;
+        /*
+         query obj;
     vector<string> query;
     string word;
     while (true)
@@ -267,18 +270,157 @@ int main()
     }
     obj.ejecutar_consulta_recibida(query);
     query.clear();
-    /*
-    Database db("Database/BD2.dat");
-    RandomFile randomfile("Indice/index.dat");
-    db.load(randomfile);
-    //randomfile.leerIndice();
-    db.imprimir_DB();
-    //randomfile.busqueda("Coloring book moana");
-    randomfile.guardarIndice();
-    //randomfile.imprimirIndices();
-    //db.add(randomfile);
-    //db.imprimir_alumnos();
-    //randomfile.imprimirIndices();
-    //randomfile.guardarIndice();
-    return 0;*/
+        */
+    }
+    stringstream ss(string s)
+    {
+        stringstream geek;
+        geek << s;
+        return geek;
+    }
+    void Insertar_query(string data)
+    {
+        Registros *registro = new Registros;
+        Database db("../../Dependencies/BD2.dat");
+        RandomFile randomfile("../Indice/index.dat");
+        randomfile.leerIndice();
+        string sub_string = "";
+        vector<string> regis;
+        for (size_t i = 0; i <= data.size(); i++)
+        {
+            if (data[i] == ',' || i == data.size())
+            {
+                regis.push_back(sub_string);
+                sub_string = "";
+            }
+            else
+            {
+                sub_string += data[i];
+            }
+        }
+        try
+        {
+            /*char App[51];
+            char Category[20];
+            float Rating = stof(regis[2]);
+            int Review = stoi(regis[3]);
+            char Size[19];
+            char Installs[15];
+            char Type[5];
+            char Price[8];
+            char Content_Rating[11];
+            char Genres[41];
+            char Last_Updates[19];
+            char Current_Ver[21];
+            char Android_Ver[21];*/
+            /*strcpy(App, (regis[0].substr(0, 51 - 1)).c_str());
+                strcpy(Category, (regis[1].substr(0, 20 - 1)).c_str());
+                strcpy(Size, (regis[4].substr(0, 19 - 1)).c_str());
+                strcpy(Installs, (regis[5].substr(0, 15 - 1)).c_str());
+                strcpy(Type, (regis[6].substr(0, 5 - 1)).c_str());
+                strcpy(Price, (regis[7].substr(0, 8 - 1)).c_str());
+                strcpy(Content_Rating, (regis[8].substr(0, 11 - 1)).c_str());
+                strcpy(Genres, (regis[9].substr(0, 41 - 1)).c_str());
+                strcpy(Last_Updates, (regis[10].substr(0, 19 - 1)).c_str());
+                strcpy(Current_Ver, (regis[11].substr(0, 21 - 1)).c_str());
+                strcpy(Android_Ver, (regis[12].substr(0, 21 - 1)).c_str());*/
+            ///////////////////////////////////////////////////////////////
+            //geek << regis[0];
+            ss(regis[0]) >> registro->App; //geek << regis[1];
+            ss(regis[1]) >> registro->Category;
+            //geek << regis[2];
+            //ss(regis[0]) >> registro->Rating;
+            registro->Rating = stof(regis[2]);
+            //geek << regis[3];
+            //ss(regis[0]) >> registro->Review;
+            registro->Review = stoi(regis[3]);
+            //geek << regis[4];
+            ss(regis[4]) >> registro->Size;
+            //geek << regis[5];
+            ss(regis[5]) >> registro->Installs;
+            //geek << regis[6];
+            ss(regis[6]) >> registro->Type;
+            //geek << regis[7];
+            ss(regis[7]) >> registro->Price;
+            //geek << regis[8];
+            ss(regis[8]) >> registro->Content_Rating;
+            //geek << regis[9];
+            ss(regis[9]) >> registro->Genres;
+            //geek << regis[10];
+            ss(regis[10]) >> registro->Last_Updates;
+            //geek << regis[11];
+            ss(regis[11]) >> registro->Current_Ver;
+            //geek << regis[12];
+            ss(regis[12]) >> registro->Android_Ver;
+            /*strncpy(registro->App, App, 51);
+            strncpy(registro->Category, Category, 20);
+            registro->Review = Review;
+            registro->Rating = Rating;
+            strncpy(registro->Size, Size, 19);
+            strncpy(registro->Installs, Installs, 15);
+            strncpy(registro->Type, Type, 5);
+            strncpy(registro->Price, Price, 8);
+            strncpy(registro->Content_Rating, Content_Rating, 11);
+            strncpy(registro->Genres, Genres, 41);
+            strncpy(registro->Last_Updates, Last_Updates, 19);
+            strncpy(registro->Current_Ver, Current_Ver, 21);
+            strncpy(registro->Android_Ver, Android_Ver, 21);*/
+        }
+        catch (...)
+        {
+            cout << "Error en la inserccion" << endl;
+            return;
+        }
+        db.add(randomfile, registro);
+        //db.imprimir_DB();
+        //randomfile.imprimirIndices();
+        randomfile.guardarIndice();
+        //cout << "nice";
+    }
+    void ejecutar_consulta_recibida(string query_string)
+    {
+        vector<string> query = parse_query(query_string);
+        if (!verificar_consulta_recibida(query))
+        {
+            cout << "Error en la consulta, consulta erronea" << endl;
+            return;
+        }
+
+        if (query[0] == "insert")
+        {
+            Insertar_query(query[4]);
+        }
+        else if (query[0] == "select")
+        {
+            RandomFile randomfile("../Indice/index.dat");
+            randomfile.leerIndice();
+            vector<Registros *> registros_recibidos;
+            char App[App_name_size];
+            if (query.size() == 4)
+            {
+                //randomfile.busqueda("0", query[1]);
+                for (std::map<string, int>::iterator it = randomfile.index.indice.begin(); it != randomfile.index.indice.end(); ++it)
+                {
+                    registros_recibidos.push_back(randomfile.busqueda(it->first));
+                }
+                Imprimir_registros(registros_recibidos, query[1]);
+            }
+            else if (query.size() == 8)
+            {
+
+                strcpy(App, (query[7].substr(0, App_name_size - 1)).c_str());
+                //randomfile.busqueda(App, query[1]);
+                registros_recibidos.push_back(randomfile.busqueda(App));
+                Imprimir_registros(registros_recibidos, query[1]);
+            }
+        }
+        //randomfile.imprimirIndices();
+    }
+};
+int main()
+{
+    //string q = "select * from DB where App = 'test' ;";
+    //string q = "insert into DB values ('test','test','5.5','5',test,test,test,test,test,test,test,test,test) ;";
+    query obj;
+    obj.ejecutar_consulta_recibida(q);
 }

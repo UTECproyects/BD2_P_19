@@ -72,10 +72,10 @@ public:
     void guardarIndice()
     {
         fstream file;
-        file.open("Indice/index.dat", ios::out | ios::app | ios::binary);
+        file.open(filename, ios::out | ios::binary);
         if (file.is_open())
         {
-            for (std::map<string, int>::iterator it = index.temp_indice.begin(); it != index.temp_indice.end(); ++it)
+            for (std::map<string, int>::iterator it = index.indice.begin(); it != index.indice.end(); ++it)
             {
                 char App[App_name_size];
                 strcpy(App, (it->first.substr(0, App_name_size - 1)).c_str());
@@ -84,7 +84,7 @@ public:
                 index.indice[App] = it->second;
             }
             file.close();
-            index.temp_indice.clear();
+            index.indice.clear();
         }
     };
     void imprimirIndices()
@@ -132,20 +132,24 @@ public:
         }
         //imprimir_alumnos();
     };
-    void add(RandomFile &randomfile)
+    void add(RandomFile &randomfile, Registros *registro)
     {
-        Registros *registro = new Registros;
-        cout << "Ingrese el App[App_name_size], Category[19], Rating,(float) Review(int), Size[18], Installs[12], Type[4], Price[7], Content_Rating[10], Genres[40], Last_Update[18], Current_Ver[20], Android_Ver[20]" << endl;
-        cin >> registro->App >> registro->Category >> registro->Rating >> registro->Review >> registro->Size >> registro->Installs >> registro->Type >> registro->Price >> registro->Content_Rating >> registro->Genres >> registro->Last_Updates >> registro->Current_Ver >> registro->Android_Ver;
+        //Registros *registro = new Registros;
+        //cout << "Ingrese el App[App_name_size], Category[19], Rating,(float) Review(int), Size[18], Installs[12], Type[4], Price[7], Content_Rating[10], Genres[40], Last_Update[18], Current_Ver[20], Android_Ver[20]" << endl;
+        //cin >> registro->App >> registro->Category >> registro->Rating >> registro->Review >> registro->Size >> registro->Installs >> registro->Type >> registro->Price >> registro->Content_Rating >> registro->Genres >> registro->Last_Updates >> registro->Current_Ver >> registro->Android_Ver;
         registros.push_back(*registro);
         fstream file;
         file.open(filename, ios::out | ios::app | ios::binary);
         if (file.is_open())
         {
+            file.seekg(0, ios::end);
+            int sizeDocument = file.tellg();
             //file.write((char *)&tam, sizeof(int));
             file.write((char *)registro, tamanio_registro);
             file.close();
-            randomfile.index.temp_indice[registro->App] = (registros.size() - 1) * tamanio_registro;
+            randomfile.index.indice[registro->App] = sizeDocument;
+            //cout << sizeDocument << endl;
+            //cout << "asdaasd";
         }
     }
     void imprimir_DB()
