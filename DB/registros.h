@@ -19,7 +19,7 @@ public:
     char Genres[41];
     char Last_Updates[19];
     char Current_Ver[21];
-    char Android_Ver[21];
+    char Android_Ver[21];   
 
     void get_registro(int pos,Registros *regis){
         fstream files;        
