@@ -1,7 +1,7 @@
-#include "Block.h"
+#include "Bucket.h"
 using namespace std;
 
-map<string,Block*> indexTable;
+map<string,Bucket*> indexTable;
 
 string hashString(string name){
   long hash = 0;
@@ -13,18 +13,18 @@ string hashString(string name){
   return result;
 }
 
-void divideBlock(Block* oldblock);
+void divideBucket(Bucket* oldBucket);
 
 void initializeTable(){
-  Block* cero = new Block("0");
-  Block* uno = new Block("1");
+  Bucket* cero = new Bucket("0");
+  Bucket* uno = new Bucket("1");
   string hash;
   string last;
   for(int i = 0; i < pow(2,10); i++){
     hash = bitset<10>(i).to_string();
     last = hash[9];
-    if(last == "0"){indexTable.insert(pair<string,Block*>(hash,cero));}
-    else{indexTable.insert(pair<string,Block*>(hash,uno));}
+    if(last == "0"){indexTable.insert(pair<string,Bucket*>(hash,cero));}
+    else{indexTable.insert(pair<string,Bucket*>(hash,uno));}
   }
 }
 
@@ -35,15 +35,20 @@ void insertToTable(string name, long registerNumber){
     indexTable[binaryHash]-> insert(registerNumber);
   }
   else{
-    divideBlock(indexTable[binaryHash]);
+    divideBucket(indexTable[binaryHash]);
     insertToTable(binaryHash,registerNumber);
   }
 }
 
-Registros searchInTable(string name){
+Registros* searchInTable(string name){
   string binaryHash = hashString(name);
-  Registros reg = indexTable[binaryHash]->searchForValue(name);
-  return reg;
+  Registros* reg = new Registros;
+  if(indexTable[binaryHash]->searchForValue(name,reg)){
+    return reg;
+  }
+  else{
+    return NULL;
+  }
 }
 
 void printTable(){
@@ -54,25 +59,25 @@ void printTable(){
     }
 }
 
-void divideBlock(Block* oldblock){
-  string blockname = oldblock->getName();
-  string newname0 = "0"+blockname;
-  string newname1 = "1"+blockname;
+void divideBucket(Bucket* oldBucket){
+  string Bucketname = oldBucket->getName();
+  string newname0 = "0"+Bucketname;
+  string newname1 = "1"+Bucketname;
   string hash;
-  Block* block0 = new Block(newname0);
-  Block* block1 = new Block(newname1);
+  Bucket* Bucket0 = new Bucket(newname0);
+  Bucket* Bucket1 = new Bucket(newname1);
   for(int i = 0; i < pow(2,10); i++){
     hash = bitset<10>(i).to_string();
     if(hash.substr(10-(newname0.size()),newname0.size())==newname0)
-      indexTable[hash] = block0;
+      indexTable[hash] = Bucket0;
     else if(hash.substr(10-(newname0.size()),newname0.size())==newname1)
-      indexTable[hash] = block1;
+      indexTable[hash] = Bucket1;
   }
-  vector<long> values = oldblock->getValues();
+  vector<long> values = oldBucket->getValues();
   for(int i = 0;i < values.size();i++){
     Registros reg;
     reg.get_registro(values[i]);
     insertToTable(reg.App,values[i]);
   }
-  delete oldblock;
+  delete oldBucket;
 }
