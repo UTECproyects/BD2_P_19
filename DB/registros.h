@@ -7,25 +7,25 @@ using namespace std;
 class Registros
 {
 public:    
-    char App[50];
-    char Category[19];
+    char App[51];
+    char Category[20];
     float Rating;
     int Review;
-    char Size[18];
-    char Installs[12];
-    char Type[4];
-    char Price[7];
-    char Content_Rating[10];
-    char Genres[40];
-    char Last_Updates[18];
-    char Current_Ver[20];
-    char Android_Ver[20];
+    char Size[19];
+    char Installs[13];
+    char Type[5];
+    char Price[8];
+    char Content_Rating[11];
+    char Genres[41];
+    char Last_Updates[19];
+    char Current_Ver[21];
+    char Android_Ver[21];
 
     void get_registro(int pos,Registros *regis){
         fstream files;        
         files.open("BD2.dat",ios::in | ios::binary);
-        files.seekg(226*pos,ios::beg);
-        files.read((char *)regis, 226);
+        files.seekg(237*pos,ios::beg);
+        files.read((char *)regis, 237);
         files.close();
     }
 };

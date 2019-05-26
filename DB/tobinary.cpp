@@ -44,7 +44,7 @@ int main(){
     while(!data.eof()){        
         getline(data,linea);        
         pals = split_iterator(linea);            
-        strcpy(registro.App,pals[0].substr(0,49).c_str()); 
+        strcpy(registro.App,pals[0].substr(0,50).c_str()); 
         strcpy(registro.Category,pals[1].c_str());          
         registro.Rating=stof(pals[2]);                
         registro.Review=stoi(pals[3]);
