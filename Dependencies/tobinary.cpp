@@ -57,7 +57,7 @@ int main(){
         strcpy(registro.Last_Updates,pals[10].c_str());
         strcpy(registro.Current_Ver,pals[11].c_str());
         strcpy(registro.Android_Ver,pals[12].c_str());
-        file.write((char *)&(registro), 226);
+        file.write((char *)&(registro), 239);
 
 
         pals.clear();

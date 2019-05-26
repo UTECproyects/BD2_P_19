@@ -6,17 +6,17 @@
 #include <bitset>
 #include <fstream>
 #include <cmath>
-#include "registros.h"
+#include "../Dependencies/registros.h"
 #define WIDTH 40
 using namespace std;
 
 
-class Block{
+class Bucket{
 private:
   string name;
   vector<long> values;
 public:
-  Block(string name):name(name){}
+  Bucket(string name):name(name){}
 
   string getName(){return name;}
 
@@ -27,12 +27,12 @@ public:
     cout <<"\n";
   }
 
-  Registros searchForValue(string name){
-    Registros reg;
+  bool searchForValue(string name,Registros* reg){
     for(int i = 0; i < values.size();i++){
-      reg.get_registro(values[i]);
-      if(reg.App==name){return reg;}
+      reg->get_registro(values[i]);
+      if(reg->App==name){return true;}
     }
+    return false;
   }
 
   vector<long> getValues(){return values;}

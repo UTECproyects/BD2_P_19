@@ -14,6 +14,7 @@
    <string>Database</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+<<<<<<< HEAD
    <widget class="QTableView" name="tableView">
     <property name="geometry">
      <rect>
@@ -47,6 +48,65 @@
      <string>PushButton</string>
     </property>
    </widget>
+=======
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QSplitter" name="splitter_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QSplitter" name="splitter">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>60</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>190</height>
+        </size>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <widget class="QListView" name="listView">
+        <property name="maximumSize">
+         <size>
+          <width>191</width>
+          <height>190</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QTextEdit" name="textEdit">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>190</height>
+         </size>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>190</height>
+         </size>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>enter</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QTableView" name="tableView"/>
+     </widget>
+    </item>
+   </layout>
+>>>>>>> 7c7d9ac57fab3e533c8bb1643841a1d7c5976173
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
