@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <map>
-#include "../DB/registros.h"
+#include "../Dependencies/registros.h"
 #define tamanio_registro 239
 #define App_name_size 51
 using namespace std;
@@ -31,7 +31,7 @@ public:
     {
         Registros *registro = new Registros;
         ifstream file;
-        file.open("../DB/BD2.dat", ios::in | ios::binary);
+        file.open("../../Dependencies/BD2.dat", ios::in | ios::binary);
         if (file.is_open())
         {
             if (index.indice.count(buscar) == 0)
