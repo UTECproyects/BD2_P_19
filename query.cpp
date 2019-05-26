@@ -135,8 +135,8 @@ public:
         }
         else if (query.size() == 8)
         {
-            char App[50];
-            strcpy(App, (query[7].substr(0, 49)).c_str());
+            char App[App_name_size];
+            strcpy(App, (query[7].substr(0, App_name_size - 1)).c_str());
             randomfile.busqueda(App, query[1]);
         }
         return true;
@@ -144,7 +144,7 @@ public:
 };
 int main()
 {
-    /*query obj;
+    query obj;
     vector<string> query;
     string word;
     while (true)
@@ -177,8 +177,9 @@ int main()
         query.push_back(word);
     }
     obj.ejecutar_consulta_recibida(query);
-    query.clear();*/
-    Database db;
+    query.clear();
+    /*
+    Database db("Database/BD2.dat");
     RandomFile randomfile("Indice/index.dat");
     db.load(randomfile);
     //randomfile.leerIndice();
@@ -190,5 +191,5 @@ int main()
     //db.imprimir_alumnos();
     //randomfile.imprimirIndices();
     //randomfile.guardarIndice();
-    return 0;
+    return 0;*/
 }

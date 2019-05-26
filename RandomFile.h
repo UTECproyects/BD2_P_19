@@ -4,27 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <map>
+#include "registros.h"
 #include "Locks/atomic_ops.h"
-#define tamanio_registro 237
+#define tamanio_registro 239
 #define App_name_size 51
 using namespace std;
-class Registros
-{
-public:
-    char App[51];
-    char Category[20];
-    float Rating;
-    int Review;
-    char Size[19];
-    char Installs[13];
-    char Type[5];
-    char Price[8];
-    char Content_Rating[11];
-    char Genres[41];
-    char Last_Updates[19];
-    char Current_Ver[21];
-    char Android_Ver[21];
-};
 class RandomIndex
 {
 public:
@@ -236,7 +220,7 @@ public:
                 //string temp_indice = indice;
                 file.read((char *)&direccion, sizeof(int));
                 index.indice[indice] = direccion;
-                tamanio_actual += 54;
+                tamanio_actual += App_name_size + 4;
             }
             file.close();
         }
@@ -250,7 +234,7 @@ public:
             for (std::map<string, int>::iterator it = index.temp_indice.begin(); it != index.temp_indice.end(); ++it)
             {
                 char App[App_name_size];
-                strcpy(App, (it->first.substr(0, 49)).c_str());
+                strcpy(App, (it->first.substr(0, App_name_size - 1)).c_str());
                 file.write((char *)&(App), App_name_size);
                 file.write((char *)&(it->second), sizeof(int));
                 index.indice[App] = it->second;
@@ -270,15 +254,20 @@ public:
 class Database
 {
 private:
-    char filename[100];
+    string filename;
     vector<Registros> registros;
 
 public:
+    Database(string filename)
+    {
+        this->filename = filename;
+        //leerIndice();
+    }
     void load(RandomFile &randomfile)
     {
         registros.clear();
         ifstream file;
-        file.open("Database/BD2.dat", ios::in | ios::binary);
+        file.open(filename, ios::in | ios::binary);
         file.seekg(0, ios::end);
         int tamanio_fichero = file.tellg();
         file.seekg(0, ios::beg);
@@ -306,7 +295,7 @@ public:
         cin >> registro->App >> registro->Category >> registro->Rating >> registro->Review >> registro->Size >> registro->Installs >> registro->Type >> registro->Price >> registro->Content_Rating >> registro->Genres >> registro->Last_Updates >> registro->Current_Ver >> registro->Android_Ver;
         registros.push_back(*registro);
         fstream file;
-        file.open("Database/BD2.dat", ios::out | ios::app | ios::binary);
+        file.open(filename, ios::out | ios::app | ios::binary);
         if (file.is_open())
         {
             //file.write((char *)&tam, sizeof(int));
