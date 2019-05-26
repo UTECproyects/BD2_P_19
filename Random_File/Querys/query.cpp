@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include "../Random_File/RandomFile.h"
+#include "../RandomFile.h"
 using namespace std;
 class query
 {
@@ -206,7 +206,7 @@ public:
             cout << "Error en la consulta, consulta erronea" << endl;
             return false;
         }
-        RandomFile randomfile("../Random_File/Indice/index.dat");
+        RandomFile randomfile("../Indice/index.dat");
         randomfile.leerIndice();
         //randomfile.imprimirIndices();
         vector<Registros *> registros_recibidos;
