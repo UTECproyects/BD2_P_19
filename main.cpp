@@ -1,5 +1,5 @@
-#include "DB/registros.h"
-#include "DB/dynamicHashing.h"
+#include "DynamicHashing/registros.h"
+#include "DynamicHashing/dynamicHashing.h"
 
 int main(){
   Registros reg;
@@ -9,6 +9,8 @@ int main(){
     string app(reg.App);
     insertToTable(reg.App,i);
   }
-  reg = searchInTable("Facebook");
-  reg.print();
+  Registros* search = new Registros;
+  search = searchInTable("Twit");
+  if(search){search->print();}
+  else{cout <<"No se encontro\n";}
 }
