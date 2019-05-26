@@ -6,7 +6,8 @@
 #include <bitset>
 #include <fstream>
 #include <cmath>
-#define WIDTH 2
+#include "registros.h"
+#define WIDTH 40
 using namespace std;
 
 
@@ -22,8 +23,16 @@ public:
   int getSize(){return values.size();}
 
   void print(){
-    for(auto item:values){cout <<item<<" ";}
+    for(auto item:values){cout <<item<<" -> ";}
     cout <<"\n";
+  }
+
+  Registros searchForValue(string name){
+    Registros reg;
+    for(int i = 0; i < values.size();i++){
+      reg.get_registro(values[i]);
+      if(reg.App==name){return reg;}
+    }
   }
 
   vector<long> getValues(){return values;}
