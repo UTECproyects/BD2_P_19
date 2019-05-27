@@ -1,3 +1,6 @@
+#ifndef BUCKET_H
+#define BUCKET_H
+
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -6,11 +9,7 @@
 #include <bitset>
 #include <fstream>
 #include <cmath>
-#ifdef QTapp_h
-  #include "../../Dependencies/registros.h"  
-#else
-  #include "../Dependencies/registros.h"    
-#endif
+#include "../Dependencies/registros.h"
 #define WIDTH 40
 using namespace std;
 
@@ -47,3 +46,5 @@ public:
   }
 
 };
+
+#endif 

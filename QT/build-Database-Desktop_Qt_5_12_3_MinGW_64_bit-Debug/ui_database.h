@@ -11,12 +11,12 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QListView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QSplitter>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableView>
 #include <QtWidgets/QTextEdit>
@@ -31,11 +31,10 @@ class Ui_Database
 public:
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
-    QSplitter *splitter_2;
-    QSplitter *splitter;
-    QListView *listView;
-    QTextEdit *textEdit;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label;
     QPushButton *pushButton;
+    QTextEdit *textEdit;
     QTableView *tableView;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
@@ -52,33 +51,35 @@ public:
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        splitter_2 = new QSplitter(centralWidget);
-        splitter_2->setObjectName(QString::fromUtf8("splitter_2"));
-        splitter_2->setOrientation(Qt::Vertical);
-        splitter = new QSplitter(splitter_2);
-        splitter->setObjectName(QString::fromUtf8("splitter"));
-        splitter->setMinimumSize(QSize(0, 60));
-        splitter->setMaximumSize(QSize(16777215, 190));
-        splitter->setOrientation(Qt::Horizontal);
-        listView = new QListView(splitter);
-        listView->setObjectName(QString::fromUtf8("listView"));
-        listView->setMaximumSize(QSize(191, 190));
-        splitter->addWidget(listView);
-        textEdit = new QTextEdit(splitter);
-        textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setMaximumSize(QSize(16777215, 190));
-        splitter->addWidget(textEdit);
-        pushButton = new QPushButton(splitter);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setMaximumSize(QSize(60, 190));
-        pushButton->setAutoFillBackground(false);
-        splitter->addWidget(pushButton);
-        splitter_2->addWidget(splitter);
-        tableView = new QTableView(splitter_2);
-        tableView->setObjectName(QString::fromUtf8("tableView"));
-        splitter_2->addWidget(tableView);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        label = new QLabel(centralWidget);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setMaximumSize(QSize(16777215, 80));
 
-        verticalLayout->addWidget(splitter_2);
+        horizontalLayout->addWidget(label);
+
+        pushButton = new QPushButton(centralWidget);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setMaximumSize(QSize(60, 80));
+        pushButton->setAutoFillBackground(false);
+
+        horizontalLayout->addWidget(pushButton);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
+        textEdit = new QTextEdit(centralWidget);
+        textEdit->setObjectName(QString::fromUtf8("textEdit"));
+        textEdit->setMaximumSize(QSize(16777215, 80));
+
+        verticalLayout->addWidget(textEdit);
+
+        tableView = new QTableView(centralWidget);
+        tableView->setObjectName(QString::fromUtf8("tableView"));
+
+        verticalLayout->addWidget(tableView);
 
         Database->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(Database);
@@ -88,7 +89,6 @@ public:
         mainToolBar = new QToolBar(Database);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
         Database->addToolBar(Qt::TopToolBarArea, mainToolBar);
-        Database->insertToolBarBreak(mainToolBar);
         statusBar = new QStatusBar(Database);
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
         Database->setStatusBar(statusBar);
@@ -101,6 +101,7 @@ public:
     void retranslateUi(QMainWindow *Database)
     {
         Database->setWindowTitle(QApplication::translate("Database", "Database", nullptr));
+        label->setText(QApplication::translate("Database", "Buscar aplicaci\303\263n:", nullptr));
         pushButton->setText(QApplication::translate("Database", "enter", nullptr));
     } // retranslateUi
 

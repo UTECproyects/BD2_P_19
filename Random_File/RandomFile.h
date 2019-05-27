@@ -1,3 +1,5 @@
+#ifndef RANDOMFILE_H
+#define RANDOMFILE_H
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -36,6 +38,7 @@ public:
         {
             if (index.indice.count(buscar) == 0)
             {
+                delete registro;
                 return nullptr;
             }
             file.seekg(index.indice[buscar], ios::beg);
@@ -95,14 +98,14 @@ public:
         }
     };
 };
-class Database
+class Databases
 {
 private:
     string filename;
     vector<Registros> registros;
 
 public:
-    Database(string filename)
+    Databases(string filename)
     {
         this->filename = filename;
         //leerIndice();
@@ -132,6 +135,31 @@ public:
         }
         //imprimir_alumnos();
     };
+    vector<Registros*> get_all(){
+        vector<Registros*>registross;
+        ifstream file;
+        file.open("../../Dependencies/BD2.dat", ios::in | ios::binary);
+        file.seekg(0, ios::end);
+        int tamanio_fichero = file.tellg();
+        file.seekg(0, ios::beg);
+        int tamanio_actual = 0;
+        if (file.is_open())
+        {
+            while (tamanio_actual != tamanio_fichero)
+            {
+                Registros *registro = new Registros;
+                //file.read((char *)&tam, sizeof(int));
+                file.read((char *)registro, tamanio_registro);
+                registross.push_back(registro);
+                //string gg(registro->App);                
+                tamanio_actual += tamanio_registro;
+            }
+            file.close();
+        }
+        return registross;
+
+    }
+    
     void add(RandomFile &randomfile, Registros *registro)
     {
         //Registros *registro = new Registros;
@@ -172,3 +200,5 @@ public:
         }
     };
 };
+
+#endif

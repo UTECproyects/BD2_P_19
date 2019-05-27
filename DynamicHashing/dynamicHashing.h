@@ -1,3 +1,5 @@
+#ifndef DYNAMICHASHING_H
+#define DYNAMICHASHING_H
 #include "Bucket.h"
 using namespace std;
 
@@ -81,3 +83,5 @@ void divideBucket(Bucket* oldBucket){
   }
   delete oldBucket;
 }
+
+#endif 

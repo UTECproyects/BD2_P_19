@@ -4,6 +4,17 @@
 #include <algorithm>
 #include "../RandomFile.h"
 #include <sstream>
+#include <utility>
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifndef QTapp_h
+  #define path ""
+#else
+    #define path QTapp_h
+#endif
+
+
 using namespace std;
 class query
 {
@@ -227,7 +238,14 @@ public:
             }
             else
             {
-                if (query_string[i] != (char)39 && query_string[i] != '(' && query_string[i] != ')')
+                if(query_string[i] == (char)39){
+                    i++;
+                    while (query_string[i]!=(char)39){
+                        sub_string += query_string[i];    
+                        i++;
+                    }
+                    
+                }else if (query_string[i] != '(' && query_string[i] != ')')
                 {
                     sub_string += query_string[i];
                 }
@@ -281,8 +299,8 @@ public:
     void Insertar_query(string data)
     {
         Registros *registro = new Registros;
-        Database db("../../Dependencies/BD2.dat");
-        RandomFile randomfile("../Indice/index.dat");
+        Databases db(string(path)+"Dependencies/BD2.dat");
+        RandomFile randomfile(string(path)+"Random_File/Indice/index.dat");
         randomfile.leerIndice();
         string sub_string = "";
         vector<string> regis;
@@ -377,13 +395,94 @@ public:
         randomfile.guardarIndice();
         //cout << "nice";
     }
-    void ejecutar_consulta_recibida(string query_string)
-    {
+    pair<bool,string> get_result(Registros* registros_recibidos,string columna){
+        bool punt=1;
+        string ress;
+        if (registros_recibidos == nullptr)
+        {
+            pair<bool,string>aa(0,"null");
+            return aa;
+        }
+        if (columna == "*")
+        {
+
+        }
+        else if (columna == "App")
+        {
+            punt =0;
+            ress=registros_recibidos->App;
+        }
+        else if (columna == "Category")
+        {
+            punt =0;
+            ress=registros_recibidos->Category;
+        }
+        else if (columna == "Rating")
+        {
+            punt =0;
+            ress=to_string(registros_recibidos->Rating);
+        }
+        else if (columna == "Review")
+        {
+            punt =0;
+            ress=to_string(registros_recibidos->Review);
+        }
+        else if (columna == "Size")
+        {
+            punt =0;
+            ress=registros_recibidos->Size;
+        }
+        else if (columna == "Installs")
+        {
+            punt =0;
+            ress=registros_recibidos->Installs;
+        }
+        else if (columna == "Type")
+        {
+            punt =0;
+            ress=registros_recibidos->Type;
+        }
+        else if (columna == "Price")
+        {
+            punt =0;
+            ress=registros_recibidos->Price;
+        }
+        else if (columna == "Content_Rating")
+        {
+            punt =0;
+            ress=registros_recibidos->Content_Rating;
+        }
+        else if (columna == "Genres")
+        {
+            punt =0;
+            ress=registros_recibidos->Genres;
+        }
+        else if (columna == "Last_Updates")
+        {
+            punt =0;
+            ress=registros_recibidos->Last_Updates;
+        }
+        else if (columna == "Current_Ver")
+        {
+            punt =0;
+            ress=registros_recibidos->Current_Ver;
+        }
+        else if (columna == "Android_Ver")
+        {
+            punt =0;
+            ress=registros_recibidos->Android_Ver;
+        }    
+        return pair <bool,string>(punt,ress);        
+        
+    }
+
+    pair<Registros*,pair<bool,string>> ejecutar_consulta_recibida(string query_string){
         vector<string> query = parse_query(query_string);
         if (!verificar_consulta_recibida(query))
         {
             cout << "Error en la consulta, consulta erronea" << endl;
-            return;
+            exit(-1);
+            ;
         }
 
         if (query[0] == "insert")
@@ -392,9 +491,10 @@ public:
         }
         else if (query[0] == "select")
         {
-            RandomFile randomfile("../Indice/index.dat");
+            RandomFile randomfile(string(path)+"Random_File/Indice/index.dat");
             randomfile.leerIndice();
             vector<Registros *> registros_recibidos;
+            Registros* dev;
             char App[App_name_size];
             if (query.size() == 4)
             {
@@ -410,17 +510,21 @@ public:
 
                 strcpy(App, (query[7].substr(0, App_name_size - 1)).c_str());
                 //randomfile.busqueda(App, query[1]);
-                registros_recibidos.push_back(randomfile.busqueda(App));
-                Imprimir_registros(registros_recibidos, query[1]);
+                dev=randomfile.busqueda(App);
+                registros_recibidos.push_back(dev);                
+                //Imprimir_registros(registros_recibidos, query[1]);
+                return pair<Registros*,pair<bool,string>>(dev,get_result(dev,query[1]));
             }
         }
         //randomfile.imprimirIndices();
     }
 };
+/*
 int main()
 {
-    //string q = "select * from DB where App = 'test' ;";
+    string q = "select * from DB where App = 'Gas Station' ;";
     //string q = "insert into DB values ('test','test','5.5','5',test,test,test,test,test,test,test,test,test) ;";
     query obj;
     obj.ejecutar_consulta_recibida(q);
 }
+*/
